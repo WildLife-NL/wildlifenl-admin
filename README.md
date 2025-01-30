@@ -1,2 +1,2 @@
 # wildlifenl-admin
-Adminitration tool for the WildlifeNL project
+Administration tool for the WildlifeNL project
