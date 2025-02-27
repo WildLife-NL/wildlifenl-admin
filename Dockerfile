@@ -2,7 +2,6 @@ FROM ubuntu:20.04
 
 WORKDIR /app
 
-# Install dependencies
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     curl \
     git \
@@ -11,7 +10,10 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     zip \
     libglu1-mesa \
     ca-certificates \
-    cmake && \
+    cmake \
+    ninja-build \
+    clang \
+    pkg-config && \
     apt-get clean
 
 
