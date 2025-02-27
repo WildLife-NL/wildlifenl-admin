@@ -3,7 +3,7 @@ FROM instrumentisto/flutter:3.29.0-androidsdk34-r0
 WORKDIR /app
 
 RUN chown -R root:root /usr/local/flutter
-RUN git config --global --add safe.directory /usr/local/flutter
+RUN git config --system --add safe.directory /usr/local/flutter
 
 COPY . .
 
