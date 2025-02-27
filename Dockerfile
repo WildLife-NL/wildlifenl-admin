@@ -6,7 +6,9 @@ WORKDIR /app
 ENV HOME=/app
 RUN mkdir -p $HOME/.config/flutter && chmod -R g+w $HOME/.config
 
-RUN chown -R 1001:0 /usr/local/flutter && chmod -R g+w /usr/local/flutter
+# Ensure Flutter directory is writable without assuming a specific user
+RUN chmod -R g+w /usr/local/flutter
+
 RUN git config --system --add safe.directory /usr/local/flutter
 
 COPY . .
