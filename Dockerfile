@@ -6,9 +6,8 @@ WORKDIR /app
 ENV HOME=/app
 RUN mkdir -p $HOME/.config/flutter && chmod -R g+w $HOME/.config
 
-# Ensure Flutter directory and cache are writable without assuming a specific user
-RUN chmod -R g+w /usr/local/flutter
-RUN chmod -R g+w /usr/local/flutter/bin/cache
+# Ensure Flutter directory and cache are fully writable
+RUN chmod -R 777 /usr/local/flutter/bin/cache
 
 RUN git config --system --add safe.directory /usr/local/flutter
 
