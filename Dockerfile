@@ -2,6 +2,8 @@ FROM ubuntu:20.04
 
 WORKDIR /app
 
+COPY run.sh /home/appuser
+
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     curl \
     git \
