@@ -3,16 +3,17 @@ FROM ubuntu:20.04
 WORKDIR /app
 
 # Install dependencies
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     curl \
     git \
     unzip \
     xz-utils \
-    cmake && \
     zip \
     libglu1-mesa \
-    ca-certificates && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+    ca-certificates \
+    cmake && \
+    apt-get clean
+
 
 # Install Flutter manually in a writable location
 RUN git clone https://github.com/flutter/flutter.git /opt/flutter
