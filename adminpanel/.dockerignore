@@ -1,0 +1,6 @@
+build/
+.git/
+.idea/
+.pub-cache/
+.flutter-plugins
+.flutter-plugins-dependencies
