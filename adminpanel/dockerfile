@@ -1,0 +1,14 @@
+FROM cirrusci/flutter:stable
+
+WORKDIR /app
+
+COPY . .
+
+RUN flutter doctor -v
+RUN flutter pub get
+
+RUN flutter build apk --release
+
+EXPOSE 8080
+
+CMD ["flutter", "run", "--release", "-d", "web-server", "--web-port=8080"]
