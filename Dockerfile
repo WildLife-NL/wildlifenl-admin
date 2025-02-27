@@ -7,6 +7,7 @@ WORKDIR /app
 
 COPY . .
 
+RUN git config --global --add safe.directory /usr/local/flutter
 
 RUN flutter pub get
 
