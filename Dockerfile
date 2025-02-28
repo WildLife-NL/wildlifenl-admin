@@ -1,42 +1,27 @@
-FROM ubuntu:20.04
+FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-COPY run.sh /home/appuser
+COPY package.json package-lock.json ./
+RUN npm ci
 
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    curl \
-    git \
-    unzip \
-    xz-utils \
-    zip \
-    libglu1-mesa \
-    ca-certificates \
-    cmake \
-    ninja-build \
-    clang \
-    pkg-config && \
-    apt-get clean
-
-
-# Install Flutter manually in a writable location
-RUN git clone https://github.com/flutter/flutter.git /opt/flutter
-
-# Add Flutter to PATH
-ENV PATH="/opt/flutter/bin:${PATH}"
-
-# Set writable Flutter home
-ENV FLUTTER_HOME=/opt/flutter
-
-# Set Git safe directory
-RUN git config --system --add safe.directory /opt/flutter
-
-# Copy application files
 COPY . .
 
-# Install Flutter dependencies
-RUN flutter pub get
+RUN npm run build
+
+FROM nginx:alpine
+
+WORKDIR /usr/share/nginx/html
+
+RUN rm -rf ./*
+
+COPY --from=builder /app/dist .
+
+RUN chown -R 1001:0 /usr/share/nginx/html && \
+    chmod -R g+rwX /usr/share/nginx/html
+
+USER 1001
 
 EXPOSE 8080
 
-CMD ["flutter", "run", "-d", "web-server", "--web-port", "8080", "--web-hostname", "0.0.0.0"]
+CMD ["nginx", "-g", "daemon off;"]
