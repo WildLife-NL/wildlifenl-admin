@@ -1,42 +1,35 @@
-FROM ubuntu:20.04
+# Stage 1: Build the frontend app
+FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-COPY run.sh /home/appuser
+# Copy package files and install dependencies
+COPY package.json package-lock.json ./
+RUN npm ci
 
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    curl \
-    git \
-    unzip \
-    xz-utils \
-    zip \
-    libglu1-mesa \
-    ca-certificates \
-    cmake \
-    ninja-build \
-    clang \
-    pkg-config && \
-    apt-get clean
-
-
-# Install Flutter manually in a writable location
-RUN git clone https://github.com/flutter/flutter.git /opt/flutter
-
-# Add Flutter to PATH
-ENV PATH="/opt/flutter/bin:${PATH}"
-
-# Set writable Flutter home
-ENV FLUTTER_HOME=/opt/flutter
-
-# Set Git safe directory
-RUN git config --system --add safe.directory /opt/flutter
-
-# Copy application files
+# Copy app source and build
 COPY . .
+RUN npm run build
 
-# Install Flutter dependencies
-RUN flutter pub get
+# Stage 2: Serve with Nginx
+FROM nginx:alpine
 
+# Set working directory for Nginx
+WORKDIR /usr/share/nginx/html
+
+# Clean the default HTML directory
+RUN rm -rf ./*
+
+# Copy built frontend files from the builder stage
+COPY --from=builder /app/dist . 
+
+# Ensure necessary directories exist and have correct permissions
+RUN mkdir -p /var/cache/nginx /var/run /var/log/nginx && \
+    chown -R 1001:0 /usr/share/nginx/html /var/cache/nginx /var/run /var/log/nginx && \
+    chmod -R g+rwX /usr/share/nginx/html /var/cache/nginx /var/run /var/log/nginx
+
+# Expose the correct port
 EXPOSE 8080
 
-CMD ["flutter", "run", "-d", "web-server", "--web-port", "8080", "--web-hostname", "0.0.0.0"]
+# Run Nginx in the foreground
+CMD ["nginx", "-g", "daemon off;"]
