@@ -1,35 +1,25 @@
-# Stage 1: Build the frontend app
-FROM node:18-alpine AS builder
+FROM node:20.17.0-alpine AS build 
 
-WORKDIR /app
+WORKDIR /usr/src/app
 
-# Copy package files and install dependencies
-COPY package.json package-lock.json ./
-RUN npm ci
+COPY package*.json ./
 
-# Copy app source and build
+RUN npm ci --production
+
 COPY . .
+
 RUN npm run build
 
-# Stage 2: Serve with Nginx
 FROM nginx:alpine
 
-# Set working directory for Nginx
-WORKDIR /usr/share/nginx/html
+RUN chmod -R 777 /var/log/nginx /var/cache/nginx/ \
+&& chmod -R 777 /var/run \
+&& chmod -R 777 /etc/nginx/*
 
-# Clean the default HTML directory
-RUN rm -rf ./*
+COPY --from=build /usr/src/app/build /usr/share/nginx/html
 
-# Copy built frontend files from the builder stage
-COPY --from=builder /app/dist . 
+COPY nginx.conf /etc/nginx/nginx.conf
 
-# Ensure necessary directories exist and have correct permissions
-RUN mkdir -p /var/cache/nginx /var/run /var/log/nginx && \
-    chown -R 1001:0 /usr/share/nginx/html /var/cache/nginx /var/run /var/log/nginx && \
-    chmod -R g+rwX /usr/share/nginx/html /var/cache/nginx /var/run /var/log/nginx
-
-# Expose the correct port
 EXPOSE 8080
 
-# Run Nginx in the foreground
 CMD ["nginx", "-g", "daemon off;"]
