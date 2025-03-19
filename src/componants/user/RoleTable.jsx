@@ -18,18 +18,22 @@ const RoleTable = () => {
   const [data, setData] = useState([]);
   const [roles, setRoles] = useState([]);
   const [responseRoles, setResponseRoles] = useState([]);
-
+  const [currentUserID, setCurrentUserID] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const rolesResponse = await UsersAPI.getAllRoles();
-        console.log(rolesResponse);
         setResponseRoles(rolesResponse.data);
         setRoles(rolesResponse.data.map(role => role.name));
 
         const usersResponse = await UsersAPI.getAllUserProfiles();
         setData(usersResponse.data);
+
+        // Fetch logged-in user profile
+        const myProfile = await UsersAPI.getMyUserProfile();
+        console.log(myProfile);
+        setCurrentUserID(myProfile.data.ID);
       } catch (error) {
         console.error("Error fetching data", error);
       }
@@ -39,21 +43,8 @@ const RoleTable = () => {
 
   const handleRoleAdd = async (userID, newRole) => {
     try {
-      console.log(roles);
-      const role = roles.find(role => role === newRole);
-      
-      console.log(responseRoles);
-      const roleID = responseRoles.find(role => role.name === newRole).ID
-      console.log(roleID);
-
-      if (!role) return;
-      
-      const test = 
-      [{
-        userID: userID,
-        roleID: roleID
-      }];
-      console.log(test);
+      const roleID = responseRoles.find(role => role.name === newRole)?.ID;
+      if (!roleID) return;
 
       await UsersAPI.addRole(roleID, userID);
       setData(prevData => prevData.map(user =>
@@ -66,7 +57,8 @@ const RoleTable = () => {
 
   const handleRoleRemove = async (userID, roleName) => {
     try {
-      const roleID = responseRoles.find(role => role.name === roleName).ID
+      const roleID = responseRoles.find(role => role.name === roleName)?.ID;
+      if (!roleID) return;
 
       await UsersAPI.removeRole(roleID, userID);
       setData(prevData => prevData.map(user =>
@@ -82,7 +74,7 @@ const RoleTable = () => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>ID</TableCell>
+            <TableCell>Email</TableCell>
             <TableCell>Name</TableCell>
             <TableCell>Roles</TableCell>
           </TableRow>
@@ -94,23 +86,40 @@ const RoleTable = () => {
               <TableCell>{user.name}</TableCell>
               <TableCell>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1, flexDirection: "row", justifyContent: "flex-start", width: "100%" }}>
+                  {/* Role Selection Dropdown */}
                   <Select
-                    value=""
+                    value="" 
                     onChange={(e) => handleRoleAdd(user.ID, e.target.value)}
                     displayEmpty
+                    renderValue={() => "Select Role"} // Placeholder text
                   >
-                    <MenuItem value="" disabled>Select Role</MenuItem>
                     {roles.map((role) => (
-                      <MenuItem key={role} value={role}>{role}</MenuItem>
+                      <MenuItem 
+                        key={role} 
+                        value={role} 
+                        disabled={user.roles?.some(r => r.name === role)} // Disable if user already has the role
+                      >
+                        {role}
+                      </MenuItem>
                     ))}
                   </Select>
-                  {user.roles?.map(role => (
-                    <Chip
-                      key={role.name}
-                      label={role.name}
-                      onDelete={() => handleRoleRemove(user.ID, role.name)}
-                    />
-                  ))}
+                    {user.roles?.map(role => (
+                      user.ID === currentUserID && role.name === "administrator" ? (
+                        // Non-deletable administrator Chip for logged-in user (styled the same as others)
+                        <Chip 
+                          key={role.name} 
+                          label={role.name} 
+                          color="default"
+                        />
+                      ) : (
+                        // Deletable Chip for other roles
+                        <Chip
+                          key={role.name}
+                          label={role.name}
+                          onDelete={() => handleRoleRemove(user.ID, role.name)}
+                        />
+                      )
+                    ))}
                 </Box>
               </TableCell>
             </TableRow>

@@ -1,7 +1,7 @@
 import { Route, Routes, BrowserRouter as Router, useLocation } from "react-router-dom";
 import NavBar from "./componants/NavBar";
 import Login from "./pages/Login";
-import Roles from "./pages/Roles";
+import Users from "./pages/Users";
 import EditSpecies from "./pages/EditSpecies";
 import CreateSpecies from "./pages/CreateSpecies";
 import Unauthorized from "./pages/Unauthorized";
@@ -31,7 +31,7 @@ function MainLayout() {
         
           <Route path="/Users" element={
             <ProtectedRoute requiredRoles={["administrator"]}>
-              <Roles />
+              <Users />
             </ProtectedRoute>} />
           
           <Route path="/EditSpecies" element={

@@ -1,6 +1,6 @@
 import RoleTable from "../componants/user/RoleTable";
 
-function Roles(){
+function Users(){
     return(
         <RoleTable>
 
@@ -8,4 +8,4 @@ function Roles(){
     )
 }
 
-export default Roles;
+export default Users;

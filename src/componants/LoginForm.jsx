@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { TextField, Button, Container, Box, Typography } from "@mui/material";
-import AuthAPI from "../../api/Auth"; 
+import AuthAPI from "../api/Auth"; 
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -56,7 +56,7 @@ const LoginForm = () => {
                     
                     localStorage.setItem("authToken", response.data.token);
                     console.log(localStorage.getItem("authToken"));
-                    window.location.href = "/Roles";
+                    window.location.href = "/Users";
                 }
             }
             catch (e){
