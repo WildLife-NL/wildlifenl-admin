@@ -20,9 +20,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "cross-env process.env.NODE_ENV=development && react-scripts start",
-    "build:prod": "cross-env process.env.NODE_ENV=production react-scripts build",
-    "test": "cross-env NODE_ENV=development react-scripts test",
+    "start": "react-scripts start",
+    "build:prod": "react-scripts build",
+    "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
