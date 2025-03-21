@@ -4,15 +4,12 @@ import SpeciesAPI from "../api/Species";
 import SpeciesTable from "../componants/species/SpeciesTable";
 import SpeciesTableFilters from "../componants/species/SpeciesTableFilters";
 
-const natureRoles = ["Grazer", "Roofdier", "Opruimer"];
-const categoriesRoles = ["Hoefdieren", "Roofdieren", "Overig"];
-
 const EditSpecies = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategories, setSelectedCategories] = useState([]);
-  const [selectedRoles, setSelectedRoles] = useState([]);
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const [roleFilter, setRoleFilter] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,31 +26,33 @@ const EditSpecies = () => {
 
   useEffect(() => {
     const filtered = data.filter((species) => {
-      const matchesSearch = species.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                            species.commonName.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesSearch =
+        species.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        species.commonName.toLowerCase().includes(searchTerm.toLowerCase());
 
-      const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(species.category);
-      const matchesRole = selectedRoles.length === 0 || selectedRoles.includes(species.roleInNature);
+      const matchesCategory =
+        !categoryFilter || species.category.toLowerCase().includes(categoryFilter.toLowerCase());
+
+      const matchesRole =
+        !roleFilter || species.roleInNature.toLowerCase().includes(roleFilter.toLowerCase());
 
       return matchesSearch && matchesCategory && matchesRole;
     });
 
     setFilteredData(filtered);
-  }, [searchTerm, selectedCategories, selectedRoles, data]);
+  }, [searchTerm, categoryFilter, roleFilter, data]);
 
   return (
     <Paper>
       <SpeciesTableFilters
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
-        selectedCategories={selectedCategories}
-        setSelectedCategories={setSelectedCategories}
-        selectedRoles={selectedRoles}
-        setSelectedRoles={setSelectedRoles}
-        categories={categoriesRoles}
-        rolesInNature={natureRoles}
+        categoryFilter={categoryFilter}
+        setCategoryFilter={setCategoryFilter}
+        roleFilter={roleFilter}
+        setRoleFilter={setRoleFilter}
       />
-      <SpeciesTable data={filteredData} setData={setData} categories={categoriesRoles} rolesInNature={natureRoles} />
+      <SpeciesTable data={filteredData} setData={setData} />
     </Paper>
   );
 };

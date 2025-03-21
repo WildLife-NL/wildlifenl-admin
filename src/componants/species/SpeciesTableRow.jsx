@@ -1,11 +1,11 @@
 import React from "react";
-import { TableRow, TableCell, TextField, Select, MenuItem, Button } from "@mui/material";
+import { TableRow, TableCell, TextField, Button } from "@mui/material";
 import SpeciesAPI from "../../api/Species";
 
-const SpeciesTableRow = ({ species, setData, categories, rolesInNature }) => {
+const SpeciesTableRow = ({ species, setData }) => {
   const handleInputChange = (field, value) => {
-    setData(prevData =>
-      prevData.map(s => s.ID === species.ID ? { ...s, [field]: value } : s)
+    setData((prevData) =>
+      prevData.map((s) => (s.ID === species.ID ? { ...s, [field]: value } : s))
     );
   };
 
@@ -30,11 +30,7 @@ const SpeciesTableRow = ({ species, setData, categories, rolesInNature }) => {
         <TextField multiline value={species.description || ""} onChange={(e) => handleInputChange("description", e.target.value)} />
       </TableCell>
       <TableCell>
-        <Select value={species.category || ""} onChange={(e) => handleInputChange("category", e.target.value)}>
-          {categories.map((category) => (
-            <MenuItem key={category} value={category}>{category}</MenuItem>
-          ))}
-        </Select>
+        <TextField value={species.category || ""} onChange={(e) => handleInputChange("category", e.target.value)} />
       </TableCell>
       <TableCell>
         <TextField multiline value={species.advice || ""} onChange={(e) => handleInputChange("advice", e.target.value)} />
@@ -43,11 +39,7 @@ const SpeciesTableRow = ({ species, setData, categories, rolesInNature }) => {
         <TextField multiline value={species.behavior || ""} onChange={(e) => handleInputChange("behavior", e.target.value)} />
       </TableCell>
       <TableCell>
-        <Select value={species.roleInNature || ""} onChange={(e) => handleInputChange("roleInNature", e.target.value)}>
-          {rolesInNature.map((role) => (
-            <MenuItem key={role} value={role}>{role}</MenuItem>
-          ))}
-        </Select>
+        <TextField value={species.roleInNature || ""} onChange={(e) => handleInputChange("roleInNature", e.target.value)} />
       </TableCell>
       <TableCell>
         <Button variant="contained" color="primary" onClick={handleSubmit}>

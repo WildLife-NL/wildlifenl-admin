@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextField, Select, MenuItem, Button, FormControl, InputLabel, Box } from "@mui/material";
+import { TextField, Button, Box } from "@mui/material";
 import SpeciesAPI from "../../api/Species";
 
 const SpeciesCreator = () => {
@@ -12,9 +12,6 @@ const SpeciesCreator = () => {
     behaviour: "",
     description: "",
   });
-
-  const categories = ["Hoefdieren", "Roofdieren", "Overig"];
-  const roles = ["Grazer", "Roofdier", "Opruimer"];
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -36,23 +33,8 @@ const SpeciesCreator = () => {
       <TextField label="Latin Name" name="name" value={formData.name} onChange={handleChange} fullWidth required />
       <TextField label="Common Name" name="commonName" value={formData.commonName} onChange={handleChange} fullWidth required />
       
-      <FormControl fullWidth required>
-        <InputLabel>Category</InputLabel>
-        <Select name="category" value={formData.category} onChange={handleChange}>
-          {categories.map((cat) => (
-            <MenuItem key={cat} value={cat}>{cat}</MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-
-      <FormControl fullWidth required>
-        <InputLabel>Role in Nature</InputLabel>
-        <Select name="roleInNature" value={formData.roleInNature} onChange={handleChange}>
-          {roles.map((role) => (
-            <MenuItem key={role} value={role}>{role}</MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+      <TextField label="Category" name="category" value={formData.category} onChange={handleChange} fullWidth required />
+      <TextField label="Role in Nature" name="roleInNature" value={formData.roleInNature} onChange={handleChange} fullWidth required />
       
       <TextField label="Advice" name="advice" value={formData.advice} onChange={handleChange} multiline rows={3} fullWidth required />
       <TextField label="Behaviour" name="behaviour" value={formData.behaviour} onChange={handleChange} multiline rows={3} fullWidth required />
