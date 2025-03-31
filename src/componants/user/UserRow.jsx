@@ -6,8 +6,8 @@ import RoleChips from "./RoleChips";
 const UserRow = ({ user, roles, responseRoles, currentUserID, setData }) => {
   return (
     <TableRow>
-      <TableCell>{user.email}</TableCell>
       <TableCell>{user.name}</TableCell>
+      <TableCell>{user.email}</TableCell>
       <TableCell>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <RoleSelect user={user} roles={roles} responseRoles={responseRoles} setData={setData} />

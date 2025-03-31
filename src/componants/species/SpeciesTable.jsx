@@ -11,9 +11,9 @@ const SpeciesTable = ({ data, setData, categories, rolesInNature }) => {
             <TableCell>Latin Name</TableCell>
             <TableCell>Common Name</TableCell>
             <TableCell>Description</TableCell>
-            <TableCell>Category</TableCell>
             <TableCell>Advice</TableCell>
             <TableCell>Behavior</TableCell>
+            <TableCell>Category</TableCell>
             <TableCell>Role in Nature</TableCell>
             <TableCell>Submit</TableCell>
           </TableRow>

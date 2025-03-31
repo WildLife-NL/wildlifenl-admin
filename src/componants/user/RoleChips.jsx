@@ -25,7 +25,7 @@ const RoleChips = ({ user, currentUserID, setData, responseRoles }) => {
       {user.roles?.map((role) =>
         user.ID === currentUserID && role.name === "administrator" ? (
           // Special chip for logged-in user's administrator role
-          <Chip key={role.name} label="Administrator" />
+          <Chip key={role.name} label="administrator" />
         ) : (
           // Regular removable chip for other roles
           <Chip key={role.name} label={role.name} onDelete={() => handleRoleRemove(role.name)} />

@@ -13,6 +13,15 @@ const RoleTable = () => {
   const [selectedRoles, setSelectedRoles] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
+  const customOrder = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+  const customSort = (a, b) => {
+      console.log(a.name)
+      const indexA = customOrder.indexOf(a.name[0]);
+      const indexB = customOrder.indexOf(b.name[0]);
+      return indexA - indexB;
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -22,7 +31,7 @@ const RoleTable = () => {
 
         const usersResponse = await UsersAPI.getAllUserProfiles();
         setData(usersResponse.data);
-        setFilteredData(usersResponse.data);
+        setFilteredData(usersResponse.data.sort(customSort));
 
         const myProfile = await UsersAPI.getMyUserProfile();
         setCurrentUserID(myProfile.data.ID);
@@ -33,28 +42,29 @@ const RoleTable = () => {
     fetchData();
   }, []);
 
-  const applyFilters = () => {
-    let filtered = data;
+const applyFilters = () => {
+  let filtered = data;
 
-    // Role filtering (including users with no roles)
-    if (selectedRoles.length > 0) {
-      filtered = filtered.filter(user => 
-        user.roles 
-          ? user.roles.some(role => selectedRoles.includes(role.name)) 
-          : selectedRoles.includes("No Role")
-      );
-    }
+  // Role filtering (including users with no roles)
+  if (selectedRoles.length > 0) {
+    filtered = filtered.filter(user => 
+      user.roles 
+        ? user.roles.some(role => selectedRoles.includes(role.name)) 
+        : selectedRoles.includes("No Role")
+    );
+  }
 
-    // Search filtering by email or name
-    if (searchQuery.trim() !== "") {
-      filtered = filtered.filter(user =>
-        user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        user.name.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
+  // Search filtering by email or name
+  if (searchQuery.trim() !== "") {
+    filtered = filtered.filter(user =>
+      user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }
 
-    setFilteredData(filtered);
-  };
+  setFilteredData(filtered.sort(customSort));
+};
+
 
   useEffect(() => {
     applyFilters();
@@ -70,12 +80,12 @@ const RoleTable = () => {
         roles={roles} 
       />
 
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} sx={{maxHeight: 1200, overflow: 'auto'}}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Email</TableCell>
               <TableCell>Name</TableCell>
+              <TableCell>Email</TableCell>
               <TableCell>Roles</TableCell>
             </TableRow>
           </TableHead>

@@ -56,7 +56,7 @@ const LoginForm = () => {
                     
                     localStorage.setItem("authToken", response.data.token);
                     console.log(localStorage.getItem("authToken"));
-                    window.location.href = "/Users";
+                    window.location.href = "/";
                 }
             }
             catch (e){
