@@ -1,4 +1,5 @@
 import { Route, Routes, BrowserRouter as Router, useLocation } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import NavBar from "./componants/NavBar";
 import Login from "./pages/Login";
 import RoleTable from "./pages/RoleTable";
@@ -7,6 +8,7 @@ import CreateSpecies from "./pages/CreateSpecies";
 import Unauthorized from "./pages/Unauthorized";
 import "./App.css"; // Ensure this file contains the required styles
 import ProtectedRoute from "./componants/AuthWrapper";
+import HomePage from "./pages/HomePage";
 
 function App() {
   return (
@@ -18,7 +20,7 @@ function App() {
 
 function MainLayout() {
   const location = useLocation();
-  const showNavBar = location.pathname !== "/"; // Hide on login page
+  const showNavBar = location.pathname !== "/Login"; // Hide on login page
 
   return (
     <div className="app-container">
@@ -27,7 +29,12 @@ function MainLayout() {
       {/* If no navbar, apply 'full-width' to take up full space */}
       <div className={`content ${showNavBar ? "" : "full-width"}`}>
         <Routes>
-          <Route path="/" element={<Login />}/>
+          <Route path="/" element={
+            <ProtectedRoute requiredRoles={["administrator"]}>
+              <HomePage />
+            </ProtectedRoute>} />
+
+          <Route path="/Login" element={<Login />}/>
         
           <Route path="/Users" element={
             <ProtectedRoute requiredRoles={["administrator"]}>
