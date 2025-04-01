@@ -4,7 +4,7 @@ import SpeciesTableRow from "./SpeciesTableRow";
 
 const SpeciesTable = ({ data, setData, categories, rolesInNature }) => {
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} sx={{maxHeight: "90vh", overflow: 'auto'}}>
       <Table>
         <TableHead>
           <TableRow>

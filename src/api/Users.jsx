@@ -98,6 +98,28 @@ const Users = {
         catch (error){
             console.error("Auth Error: ", error.response?.data || error.message);
         } 
+    },
+
+    addUser: (email, name) => {
+        try{
+            const response = axios.post(`${API_URL}/user/`,
+                {
+                    email: email,
+                    name: name
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Accept: 'application/json, application/problem+jason',
+                        Authorization: `Bearer ${localStorage.getItem("authToken")}`
+                    }
+                }
+            );
+            return response;
+        }
+        catch (error){
+            console.error("Auth Error: ", error.response?.data || error.message);
+        } 
     }
 };
 

@@ -1,6 +1,6 @@
 import SpeciesCreator from "../componants/species/SpeciesCreator";
 
-function CreateSpecies(){
+function AddSpecies(){
     return(
         <SpeciesCreator>
             
@@ -8,4 +8,4 @@ function CreateSpecies(){
     )
 }
 
-export default CreateSpecies;
+export default AddSpecies;

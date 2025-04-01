@@ -29,7 +29,7 @@ const SpeciesCreator = () => {
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column", gap: 2, maxWidth: 400, margin: "auto" }}>
+    <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column", gap: 2, maxWidth: 400, margin: "auto", mt: "20vh"}}>
       <TextField label="Latin Name" name="name" value={formData.name} onChange={handleChange} fullWidth required />
       <TextField label="Common Name" name="commonName" value={formData.commonName} onChange={handleChange} fullWidth required />
       

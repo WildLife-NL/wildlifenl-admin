@@ -1,10 +1,10 @@
 import { Route, Routes, BrowserRouter as Router, useLocation } from "react-router-dom";
-import { Navigate } from "react-router-dom";
 import NavBar from "./componants/NavBar";
 import Login from "./pages/Login";
-import RoleTable from "./pages/RoleTable";
-import EditSpecies from "./pages/EditSpecies";
-import CreateSpecies from "./pages/CreateSpecies";
+import ModifyUsers from "./pages/ModifyUsers";
+import AddUser from "./pages/AddUser";
+import ModifySpecies from "./pages/ModifySpecies";
+import AddSpecies from "./pages/AddSpecies";
 import Unauthorized from "./pages/Unauthorized";
 import "./App.css"; // Ensure this file contains the required styles
 import ProtectedRoute from "./componants/AuthWrapper";
@@ -34,21 +34,26 @@ function MainLayout() {
               <HomePage />
             </ProtectedRoute>} />
 
-          <Route path="/Login" element={<Login />}/>
+          <Route path="/Login" element={<Login />} />
         
-          <Route path="/Users" element={
+          <Route path="/ModifyUsers" element={
             <ProtectedRoute requiredRoles={["administrator"]}>
-              <RoleTable />
+              <ModifyUsers />
             </ProtectedRoute>} />
-          
-          <Route path="/EditSpecies" element={
+
+          <Route path="/AddUser" element={
             <ProtectedRoute requiredRoles={["administrator"]}>
-              <EditSpecies />
+              <AddUser />
+            </ProtectedRoute>} />
+
+          <Route path="/ModifySpecies" element={
+            <ProtectedRoute requiredRoles={["administrator"]}>
+              <ModifySpecies />
               </ProtectedRoute>} />
-          
-          <Route path="/CreateSpecies" element={
+
+          <Route path="/AddSpecies" element={
             <ProtectedRoute requiredRoles={["administrator"]}>
-              <CreateSpecies />
+              <AddSpecies />
             </ProtectedRoute>} />
 
           <Route path="/Unauthorized" element={Unauthorized}></Route>

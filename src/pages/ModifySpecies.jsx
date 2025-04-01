@@ -4,7 +4,7 @@ import SpeciesAPI from "../api/Species";
 import SpeciesTable from "../componants/species/SpeciesTable";
 import SpeciesTableFilters from "../componants/species/SpeciesTableFilters";
 
-const EditSpecies = () => {
+const ModifySpecies = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -43,7 +43,7 @@ const EditSpecies = () => {
   }, [searchTerm, categoryFilter, roleFilter, data]);
 
   return (
-    <Paper>
+    <Paper >
       <SpeciesTableFilters
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
@@ -57,4 +57,4 @@ const EditSpecies = () => {
   );
 };
 
-export default EditSpecies;
+export default ModifySpecies;

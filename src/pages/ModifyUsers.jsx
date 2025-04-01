@@ -4,7 +4,7 @@ import UsersAPI from "../api/Users";
 import FilterBar from "../componants/user/FilterBar";
 import UserRow from "../componants/user/UserRow";
 
-const RoleTable = () => {
+const ModifyUsers = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [roles, setRoles] = useState([]);
@@ -80,7 +80,7 @@ const applyFilters = () => {
         roles={roles} 
       />
 
-      <TableContainer component={Paper} sx={{maxHeight: 1200, overflow: 'auto'}}>
+      <TableContainer component={Paper} sx={{maxHeight: "90vh", overflow: 'auto'}}>
         <Table>
           <TableHead>
             <TableRow>
@@ -107,4 +107,4 @@ const applyFilters = () => {
   );
 };
 
-export default RoleTable;
+export default ModifyUsers;
