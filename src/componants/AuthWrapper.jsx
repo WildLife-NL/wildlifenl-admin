@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import UserAPI from "../api/Users";
 
-const AuthWrapper = ({ children, requiredRoles = [], redirectTo = "/" }) => {
+const AuthWrapper = ({ children, requiredRoles = [], redirectTo = "/Login" }) => {
     const [roles, setRoles] = useState([]);
     const [loading, setLoading] = useState(true);
     

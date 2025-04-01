@@ -3,23 +3,32 @@ import { TableRow, TableCell, TextField, Button, Box } from "@mui/material";
 import SpeciesAPI from "../../api/Species";
 
 const SpeciesTableRow = ({ species, setData }) => {
-  const [focusedField, setFocusedField] = useState(null);
+  const [isRowExpanded, setIsRowExpanded] = useState(false);
 
   const handleInputChange = (field, value) => {
     setData((prevData) =>
       prevData.map((s) => (s.ID === species.ID ? { ...s, [field]: value } : s))
     );
   };
+
+  const handleFocus = () => {
+    setIsRowExpanded(true);
+  };
+
+  const handleBlur = () => {
+    setIsRowExpanded(false);
+  };
+
   const handleSubmit = (ID, species) => {
-    try{
+    try {
       SpeciesAPI.updateSpecies(ID, species);
-      console.log("Submitted Succesfully");
-    }
-    catch (e){
+      console.log("Submitted Successfully");
+    } catch (e) {
       console.log(e);
-      console.log("Submission Unsuccesful");
+      console.log("Submission Unsuccessful");
     }
-  }
+  };
+
   return (
     <TableRow sx={{ height: "auto", position: "relative", verticalAlign: "top" }}>
       <TableCell>
@@ -29,31 +38,31 @@ const SpeciesTableRow = ({ species, setData }) => {
         <TextField value={species.commonName || ""} onChange={(e) => handleInputChange("commonName", e.target.value)} />
       </TableCell>
 
-      {/* Multiline Fields - Expands Downwards Without Moving Other Cells */}
+      {/* Multiline Fields - All Expand When One is Focused */}
       {["description", "advice", "behaviour"].map((field) => (
-        <TableCell key={field} sx={{ position: "relative", verticalAlign: "top" }}>
+        <TableCell key={field} sx={{ position: "relative", verticalAlign: "top"}}>
           <Box sx={{ position: "relative", width: "100%", minHeight: "40px" }}>
             <TextField
               multiline
               value={species[field] || ""}
               onChange={(e) => handleInputChange(field, e.target.value)}
-              onFocus={() => setFocusedField(field)}
-              onBlur={() => setFocusedField(null)}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
               sx={{
                 width: "100%",
                 minHeight: "40px",
                 overflow: "hidden",
-                height: focusedField === field ? "fit-content" : "60px", // Expand only when focused
-                bottom: 0, // Expands downwards
+                height: isRowExpanded ? "fit-content" : "60px", // Expand all when one is focused
+                bottom: 0,
                 background: "white",
                 zIndex: 1,
-              }}
-            />
+                }}
+              />
           </Box>
         </TableCell>
       ))}
       <TableCell>
-        <TextField value={species.category || ""} onChange={(e) => handleInputChange("Category", e.target.value)} />
+        <TextField value={species.category || ""} onChange={(e) => handleInputChange("category", e.target.value)} />
       </TableCell>
       <TableCell>
         <TextField value={species.roleInNature || ""} onChange={(e) => handleInputChange("roleInNature", e.target.value)} />
