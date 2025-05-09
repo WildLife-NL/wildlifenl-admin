@@ -8,7 +8,7 @@ const Auth = {
             console.log(API_URL)
             const response = await axios.post(`${API_URL}/auth/`, 
                 {
-                    displayNameApp: 'MyApp',
+                    displayNameApp: 'Admin Panel',
                     email: newUser.userEmail
                 },
                 {
