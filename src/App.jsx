@@ -1,10 +1,16 @@
 import { Route, Routes, BrowserRouter as Router, useLocation } from "react-router-dom";
 import NavBar from "./componants/NavBar";
 import Login from "./pages/Login";
-import ModifyUsers from "./pages/ModifyUsers";
-import AddUser from "./pages/AddUser";
-import ModifySpecies from "./pages/ModifySpecies";
-import AddSpecies from "./pages/AddSpecies";
+
+import ModifyUsers from "./pages/users/ModifyUsers";
+import AddUser from "./pages/users/AddUser";
+
+import ModifySpecies from "./pages/species/ModifySpecies";
+import AddSpecies from "./pages/species/AddSpecies";
+
+import ModifyBelonging from "./pages/belongings/ModifyBelonging"
+import AddBelonging from "./pages/belongings/AddBelonging";
+
 import Unauthorized from "./pages/Unauthorized";
 import "./App.css"; // Ensure this file contains the required styles
 import ProtectedRoute from "./componants/AuthWrapper";
@@ -49,11 +55,21 @@ function MainLayout() {
           <Route path="/ModifySpecies" element={
             <ProtectedRoute requiredRoles={["administrator"]}>
               <ModifySpecies />
-              </ProtectedRoute>} />
+            </ProtectedRoute>} />
 
           <Route path="/AddSpecies" element={
             <ProtectedRoute requiredRoles={["administrator"]}>
               <AddSpecies />
+            </ProtectedRoute>} />
+
+          <Route path="/ModifyBelonging" element={
+            <ProtectedRoute requiredRoles={["administrator"]}>
+              <ModifyBelonging />
+            </ProtectedRoute>} />
+
+          <Route path="/AddBelonging" element={
+            <ProtectedRoute requiredRoles={["administrator"]}>
+              <AddBelonging />
             </ProtectedRoute>} />
 
           <Route path="/Unauthorized" element={Unauthorized}></Route>

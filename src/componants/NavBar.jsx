@@ -11,6 +11,7 @@ import {
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import GroupIcon from "@mui/icons-material/Group";
 import PetsIcon from "@mui/icons-material/Pets";
+import AgricultureIcon from '@mui/icons-material/Agriculture';
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -19,18 +20,27 @@ import HomeIcon from '@mui/icons-material/Home';
 function NavBar() {
   const [speciesOpen, setSpeciesOpen] = useState(false);
   const [usersOpen, setUsersOpen] = useState(false);
+  const [belongingsOpen, setBelongingsOpen] = useState(false);
 
   const toggleSpeciesMenu = () => {
     setSpeciesOpen(!speciesOpen);
     if(usersOpen){setUsersOpen(!usersOpen);}
+    if(belongingsOpen){setBelongingsOpen(!belongingsOpen);}
   };
   const toggleUsersMenu = () => {
     setUsersOpen(!usersOpen);
     if(speciesOpen){setSpeciesOpen(!speciesOpen);}
+    if(belongingsOpen){setBelongingsOpen(!belongingsOpen);}
+  };
+  const toggleBelongingMenu = () => {
+    setBelongingsOpen(!belongingsOpen);
+    if(speciesOpen){setSpeciesOpen(!speciesOpen);}
+    if(usersOpen){setUsersOpen(!usersOpen);}
   };
   const goHome = () => {
     if(usersOpen){setUsersOpen(!usersOpen);}
     if(speciesOpen){setSpeciesOpen(!speciesOpen);}
+    if(belongingsOpen){setBelongingsOpen(!belongingsOpen);}
   }
   const logOut = () => {
     localStorage.removeItem("authToken");
@@ -123,7 +133,48 @@ function NavBar() {
             <ListItemText primary="Add Species" sx={{ color: "white" }} />
           </ListItemButton>
         </List>
-      </Collapse>            
+      </Collapse>
+
+      {/* Belonging Parent Menu */}
+      <ListItemButton onClick={toggleBelongingMenu}>
+        <ListItemIcon sx={{ color: "white" }}>
+          <AgricultureIcon />
+        </ListItemIcon>
+        <ListItemText primary="Belonging" sx={{ color: "white" }} />
+        {belongingsOpen ? (
+          <ExpandLess sx={{ color: "white" }} />
+        ) : (
+          <ExpandMore sx={{ color: "white" }} />
+        )}
+      </ListItemButton>
+
+      {/* Belonging Sub-menu */}
+      <Collapse in={belongingsOpen} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          <ListItemButton
+            component={NavLink}
+            to="/ModifyBelonging"
+            sx={{ pl: 4 }}
+          >
+            <ListItemIcon sx={{ color: "white" }}>
+              <EditIcon />
+            </ListItemIcon>
+            <ListItemText primary="Modify Belonging" sx={{ color: "white" }} />
+          </ListItemButton>
+
+          <ListItemButton
+            component={NavLink}
+            to="/AddBelonging"
+            sx={{ pl: 4 }}
+          >
+            <ListItemIcon sx={{ color: "white" }}>
+              <AddIcon />
+            </ListItemIcon>
+            <ListItemText primary="Add Belonging" sx={{ color: "white" }} />
+          </ListItemButton>
+        </List>
+      </Collapse>   
+
       <ListItemButton onClick={logOut} sx={{position: "absolute", bottom: 0}}>
         <ListItemIcon sx={{ color: "white"}}>
           <LogoutIcon />
