@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box } from "@mui/material";
-import UsersAPI from "../api/Users";
-import FilterBar from "../componants/user/FilterBar";
-import UserRow from "../componants/user/UserRow";
+import UsersAPI from "../../api/Users";
+import FilterBar from "../../componants/users/FilterBar";
+import UserRow from "../../componants/users/UserRow";
 
 const ModifyUsers = () => {
   const [data, setData] = useState([]);

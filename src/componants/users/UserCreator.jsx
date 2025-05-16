@@ -25,7 +25,7 @@ const UserCreator = () => {
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column", gap: 2, maxWidth: 400, margin: "auto", mt: "40vh"}}>
+    <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column", gap: 2, maxWidth: 400, margin: "auto", mt: "20vh"}}>
       <TextField label="Email" name="email" value={formData.email} onChange={handleChange} fullWidth required type="email"/>
       <TextField label="Name" name="name" value={formData.name} onChange={handleChange} fullWidth required />
       
