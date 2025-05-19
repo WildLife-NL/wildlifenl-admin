@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Paper } from "@mui/material";
-import SpeciesAPI from "../api/Species";
-import SpeciesTable from "../componants/species/SpeciesTable";
-import SpeciesTableFilters from "../componants/species/SpeciesTableFilters";
+import SpeciesAPI from "../../api/Species";
+import SpeciesTable from "../../componants/species/SpeciesTable";
+import SpeciesTableFilters from "../../componants/species/SpeciesTableFilters";
 
 const ModifySpecies = () => {
   const [data, setData] = useState([]);

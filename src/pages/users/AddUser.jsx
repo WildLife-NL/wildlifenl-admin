@@ -1,4 +1,4 @@
-import UserCreator from "../componants/user/UserCreator";
+import UserCreator from "../../componants/users/UserCreator";
 
 function AddUser(){
     return(

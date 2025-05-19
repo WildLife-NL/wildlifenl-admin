@@ -1,4 +1,4 @@
-import SpeciesCreator from "../componants/species/SpeciesCreator";
+import SpeciesCreator from "../../componants/species/SpeciesCreator";
 
 function AddSpecies(){
     return(
