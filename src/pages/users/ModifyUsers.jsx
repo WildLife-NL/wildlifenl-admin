@@ -68,7 +68,7 @@ const applyFilters = () => {
 
   useEffect(() => {
     applyFilters();
-  }, [searchQuery, selectedRoles, data]);
+  }, [searchQuery, selectedRoles, data, applyFilters]);
 
   return (
     <Box>
