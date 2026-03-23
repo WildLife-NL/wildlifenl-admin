@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { Navigate, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import {
   List,
   ListItemButton,
   ListItemIcon,
   ListItemText,
   Collapse,
-  Box,
-} from "@mui/material";
+  } from "@mui/material";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import GroupIcon from "@mui/icons-material/Group";
 import PetsIcon from "@mui/icons-material/Pets";
