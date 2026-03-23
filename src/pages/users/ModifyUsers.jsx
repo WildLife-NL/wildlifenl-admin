@@ -42,33 +42,32 @@ const ModifyUsers = () => {
     fetchData();
   }, []);
 
-const applyFilters = () => {
-  let filtered = data;
-
-  // Role filtering (including users with no roles)
-  if (selectedRoles.length > 0) {
-    filtered = filtered.filter(user => 
-      user.roles 
-        ? user.roles.some(role => selectedRoles.includes(role.name)) 
-        : selectedRoles.includes("No Role")
-    );
-  }
-
-  // Search filtering by email or name
-  if (searchQuery.trim() !== "") {
-    filtered = filtered.filter(user =>
-      user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }
-
-  setFilteredData(filtered.sort(customSort));
-};
-
-
   useEffect(() => {
+    const applyFilters = () => {
+      let filtered = data;
+
+      // Role filtering (including users with no roles)
+      if (selectedRoles.length > 0) {
+        filtered = filtered.filter(user => 
+          user.roles 
+            ? user.roles.some(role => selectedRoles.includes(role.name)) 
+            : selectedRoles.includes("No Role")
+        );
+      }
+
+      // Search filtering by email or name
+      if (searchQuery.trim() !== "") {
+        filtered = filtered.filter(user =>
+          user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          user.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      }
+
+      setFilteredData(filtered.sort(customSort));
+    };
+    
     applyFilters();
-  }, [searchQuery, selectedRoles, data, applyFilters]);
+  }, [searchQuery, selectedRoles, data]);
 
   return (
     <Box>
