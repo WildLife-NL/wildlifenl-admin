@@ -22,6 +22,15 @@ const SpeciesCreator = () => {
     try {
       await SpeciesAPI.AddSpecies(formData);
       alert("Species added successfully!");
+      setFormData({
+        name: "",
+        commonName: "",
+        category: "",
+        roleInNature: "",
+        advice: "",
+        behaviour: "",
+        description: "",
+      });
     } catch (error) {
       console.error("Error adding species:", error);
       alert("Failed to add species.");
