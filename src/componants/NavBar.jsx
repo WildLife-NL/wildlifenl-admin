@@ -152,13 +152,13 @@ function NavBar() {
         <List component="div" disablePadding>
           <ListItemButton
             component={NavLink}
-            to="/ListLivingLabs"
+            to="/ModifyLivingLabs"
             sx={{ pl: 4 }}
           >
             <ListItemIcon sx={{ color: "white" }}>
               <EditIcon />
             </ListItemIcon>
-            <ListItemText primary="List Living Labs" sx={{ color: "white" }} />
+            <ListItemText primary="Modify Living Labs" sx={{ color: "white" }} />
           </ListItemButton>
 
           <ListItemButton

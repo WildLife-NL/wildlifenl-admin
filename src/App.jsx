@@ -9,7 +9,7 @@ import ModifySpecies from "./pages/species/ModifySpecies";
 import AddSpecies from "./pages/species/AddSpecies";
 
 import AddLivingLab from "./pages/livinglab/AddLivingLab";
-import ListLivingLabs from "./pages/livinglab/ListLivingLabs";
+import ModifyLivingLabs from "./pages/livinglab/ModifyLivingLabs";
 
 import Unauthorized from "./pages/Unauthorized";
 import "./App.css"; // Ensure this file contains the required styles
@@ -67,9 +67,9 @@ function MainLayout() {
               <AddLivingLab />
             </ProtectedRoute>} />
 
-          <Route path="/ListLivingLabs" element={
+          <Route path="/ModifyLivingLabs" element={
             <ProtectedRoute requiredRoles={["administrator"]}>
-              <ListLivingLabs />
+              <ModifyLivingLabs />
             </ProtectedRoute>} />
 
           <Route path="/Unauthorized" element={Unauthorized}></Route>

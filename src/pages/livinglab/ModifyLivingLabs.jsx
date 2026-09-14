@@ -4,7 +4,7 @@ import LivingLabAPI from "../../api/LivingLab";
 import LivingLabTable from "../../componants/livinglab/LivingLabTable";
 import LivingLabTableFilters from "../../componants/livinglab/LivingLabTableFilters";
 
-const ListLivingLabs = () => {
+const ModifyLivingLabs = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -33,9 +33,9 @@ const ListLivingLabs = () => {
   return (
     <Paper>
       <LivingLabTableFilters searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      <LivingLabTable data={filteredData} />
+      <LivingLabTable data={filteredData} setData={setData} />
     </Paper>
   );
 };
 
-export default ListLivingLabs;
+export default ModifyLivingLabs;

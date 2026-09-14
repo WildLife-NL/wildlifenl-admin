@@ -1,29 +1,21 @@
 import React, { useState } from "react";
-import { TextField, Button, Box, Typography, IconButton } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { TextField, Button, Box } from "@mui/material";
 import LivingLabAPI from "../../api/LivingLab";
+import LivingLabPointsEditor from "./LivingLabPointsEditor";
 
-const emptyPoint = { latitude: "", longitude: "" };
+const emptyPoints = () => [
+  { latitude: "", longitude: "" },
+  { latitude: "", longitude: "" },
+  { latitude: "", longitude: "" }
+];
 
 const LivingLabCreator = () => {
   const [name, setName] = useState("");
-  const [points, setPoints] = useState([{ ...emptyPoint }, { ...emptyPoint }, { ...emptyPoint }]);
-
-  const handlePointChange = (index, field, value) => {
-    setPoints(points.map((point, i) => i === index ? { ...point, [field]: value } : point));
-  };
-
-  const addPoint = () => {
-    setPoints([...points, { ...emptyPoint }]);
-  };
-
-  const removePoint = (index) => {
-    setPoints(points.filter((_, i) => i !== index));
-  };
+  const [points, setPoints] = useState(emptyPoints());
 
   const resetForm = () => {
     setName("");
-    setPoints([{ ...emptyPoint }, { ...emptyPoint }, { ...emptyPoint }]);
+    setPoints(emptyPoints());
   };
 
   const handleSubmit = async (e) => {
@@ -53,35 +45,7 @@ const LivingLabCreator = () => {
     <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column", gap: 2, maxWidth: 500, margin: "auto", mt: "10vh" }}>
       <TextField label="Name" name="name" value={name} onChange={(e) => setName(e.target.value)} fullWidth required />
 
-      <Typography variant="subtitle1">Boundary points</Typography>
-
-      {points.map((point, index) => (
-        <Box key={index} sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-          <TextField
-            label="Latitude"
-            type="number"
-            value={point.latitude}
-            onChange={(e) => handlePointChange(index, "latitude", e.target.value)}
-            inputProps={{ min: -90, max: 90, step: "any" }}
-            fullWidth
-            required
-          />
-          <TextField
-            label="Longitude"
-            type="number"
-            value={point.longitude}
-            onChange={(e) => handlePointChange(index, "longitude", e.target.value)}
-            inputProps={{ min: -180, max: 180, step: "any" }}
-            fullWidth
-            required
-          />
-          <IconButton onClick={() => removePoint(index)} disabled={points.length <= 3} aria-label="Remove point">
-            <DeleteIcon />
-          </IconButton>
-        </Box>
-      ))}
-
-      <Button variant="outlined" onClick={addPoint}>Add Point</Button>
+      <LivingLabPointsEditor points={points} setPoints={setPoints} />
 
       <Button type="submit" variant="contained" color="primary">Submit</Button>
     </Box>
