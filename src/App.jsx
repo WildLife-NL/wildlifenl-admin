@@ -8,6 +8,9 @@ import AddUser from "./pages/users/AddUser";
 import ModifySpecies from "./pages/species/ModifySpecies";
 import AddSpecies from "./pages/species/AddSpecies";
 
+import AddLivingLab from "./pages/livinglab/AddLivingLab";
+import ListLivingLabs from "./pages/livinglab/ListLivingLabs";
+
 import Unauthorized from "./pages/Unauthorized";
 import "./App.css"; // Ensure this file contains the required styles
 import ProtectedRoute from "./componants/AuthWrapper";
@@ -57,6 +60,16 @@ function MainLayout() {
           <Route path="/AddSpecies" element={
             <ProtectedRoute requiredRoles={["administrator"]}>
               <AddSpecies />
+            </ProtectedRoute>} />
+
+          <Route path="/AddLivingLab" element={
+            <ProtectedRoute requiredRoles={["administrator"]}>
+              <AddLivingLab />
+            </ProtectedRoute>} />
+
+          <Route path="/ListLivingLabs" element={
+            <ProtectedRoute requiredRoles={["administrator"]}>
+              <ListLivingLabs />
             </ProtectedRoute>} />
 
           <Route path="/Unauthorized" element={Unauthorized}></Route>
