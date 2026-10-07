@@ -18,6 +18,10 @@ const UserCreator = () => {
         console.log(formData);
         await UserAPI.addUser(formData.email, formData.name);
         alert("User added successfully!");
+        setFormData({
+        name: "",
+        email: "",
+      });
     } catch (error) {
         console.error("Error adding User:", error);
         alert("Failed to add User.");

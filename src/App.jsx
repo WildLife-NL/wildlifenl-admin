@@ -8,8 +8,8 @@ import AddUser from "./pages/users/AddUser";
 import ModifySpecies from "./pages/species/ModifySpecies";
 import AddSpecies from "./pages/species/AddSpecies";
 
-import ModifyBelonging from "./pages/belongings/ModifyBelonging"
-import AddBelonging from "./pages/belongings/AddBelonging";
+import AddLivingLab from "./pages/livinglab/AddLivingLab";
+import ModifyLivingLabs from "./pages/livinglab/ModifyLivingLabs";
 
 import Unauthorized from "./pages/Unauthorized";
 import "./App.css"; // Ensure this file contains the required styles
@@ -62,14 +62,14 @@ function MainLayout() {
               <AddSpecies />
             </ProtectedRoute>} />
 
-          <Route path="/ModifyBelonging" element={
+          <Route path="/AddLivingLab" element={
             <ProtectedRoute requiredRoles={["administrator"]}>
-              <ModifyBelonging />
+              <AddLivingLab />
             </ProtectedRoute>} />
 
-          <Route path="/AddBelonging" element={
+          <Route path="/ModifyLivingLabs" element={
             <ProtectedRoute requiredRoles={["administrator"]}>
-              <AddBelonging />
+              <ModifyLivingLabs />
             </ProtectedRoute>} />
 
           <Route path="/Unauthorized" element={Unauthorized}></Route>
