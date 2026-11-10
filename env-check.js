@@ -7,6 +7,6 @@ if (!process.env.REACT_APP_API_URL) {
     process.exit(1);
 }
 else {
-    console.log('REACT_APP_API_URL has been found: ' + process.env.REACT_APP_BASE_URL);
+    console.log('REACT_APP_API_URL has been found: ' + process.env.REACT_APP_API_URL);
     console.log('Building was succesful!');
 }
