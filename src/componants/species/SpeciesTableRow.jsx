@@ -1,14 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TableRow, TableCell, TextField, Button, Box } from "@mui/material";
 import SpeciesAPI from "../../api/Species";
 
 const SpeciesTableRow = ({ species, setData }) => {
   const [isRowExpanded, setIsRowExpanded] = useState(false);
+  const [localSpecies, setLocalSpecies] = useState(species);
+
+
+  useEffect(() => {
+    setLocalSpecies(species);
+  }, [species]);
 
   const handleInputChange = (field, value) => {
-    setData((prevData) =>
-      prevData.map((s) => (s.ID === species.ID ? { ...s, [field]: value } : s))
-    );
+    setLocalSpecies((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleFocus = () => {
@@ -19,9 +23,10 @@ const SpeciesTableRow = ({ species, setData }) => {
     setIsRowExpanded(false);
   };
 
-  const handleSubmit = (ID, species) => {
+  const handleSubmit = (ID, updatedSpecies) => {
     try {
-      SpeciesAPI.updateSpecies(ID, species);
+      SpeciesAPI.updateSpecies(ID, updatedSpecies);
+      setData((prevData) => prevData.map((s) => (s.ID === ID ? updatedSpecies : s)));
       console.log("Submitted Successfully");
     } catch (e) {
       console.log(e);
@@ -32,19 +37,19 @@ const SpeciesTableRow = ({ species, setData }) => {
   return (
     <TableRow sx={{ height: "auto", position: "relative", verticalAlign: "top" }}>
       <TableCell>
-        <TextField value={species.name || ""} onChange={(e) => handleInputChange("name", e.target.value)} />
+        <TextField value={localSpecies.name || ""} onChange={(e) => handleInputChange("name", e.target.value)} />
       </TableCell>
       <TableCell>
-        <TextField value={species.commonName || ""} onChange={(e) => handleInputChange("commonName", e.target.value)} />
+        <TextField value={localSpecies.commonName || ""} onChange={(e) => handleInputChange("commonName", e.target.value)} />
       </TableCell>
 
       {/* Multiline Fields - All Expand When One is Focused */}
-      {["description", "advice", "behaviour"].map((field) => (
+      {["description", "advice", "behaviour", "category", "roleInNature"].map((field) => (
         <TableCell key={field} sx={{ position: "relative", verticalAlign: "top"}}>
           <Box sx={{ position: "relative", width: "100%", minHeight: "40px" }}>
             <TextField
               multiline
-              value={species[field] || ""}
+              value={localSpecies[field] || ""}
               onChange={(e) => handleInputChange(field, e.target.value)}
               onFocus={handleFocus}
               onBlur={handleBlur}
@@ -62,14 +67,14 @@ const SpeciesTableRow = ({ species, setData }) => {
         </TableCell>
       ))}
       <TableCell>
-        <TextField value={species.category || ""} onChange={(e) => handleInputChange("category", e.target.value)} />
+        <TextField value={localSpecies.category || ""} onChange={(e) => handleInputChange("category", e.target.value)} />
       </TableCell>
       <TableCell>
-        <TextField value={species.roleInNature || ""} onChange={(e) => handleInputChange("roleInNature", e.target.value)} />
+        <TextField value={localSpecies.roleInNature || ""} onChange={(e) => handleInputChange("roleInNature", e.target.value)} />
       </TableCell>
 
       <TableCell>
-        <Button variant="contained" color="primary" onClick={() => handleSubmit(species.ID, species)}>
+        <Button variant="contained" color="primary" onClick={() => handleSubmit(localSpecies.ID, localSpecies)}>
           Submit
         </Button>
       </TableCell>
@@ -77,4 +82,4 @@ const SpeciesTableRow = ({ species, setData }) => {
   );
 };
 
-export default SpeciesTableRow;
+export default React.memo(SpeciesTableRow);
