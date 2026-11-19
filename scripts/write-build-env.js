@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { spawnSync } = require("child_process");
 
 const LIVE_API_URL = "https://live-api-wildlifenl.uu.nl";
 const TEST_API_URL = "https://test-api-wildlifenl.uu.nl";
@@ -52,6 +53,7 @@ function branchFromGit() {
 
 function detectBranch() {
     const candidates = [
+        process.env.VERCEL_GIT_COMMIT_REF,
         process.env.OPENSHIFT_BUILD_REFERENCE,
         process.env.SOURCE_REF,
         process.env.GIT_BRANCH,
@@ -78,15 +80,49 @@ function apiUrlForBranch(branch) {
     return TEST_API_URL;
 }
 
-const envPath = path.join(process.cwd(), ".env");
+function commandFromArgs() {
+    const execIndex = process.argv.indexOf("exec");
+    if (execIndex === -1) {
+        return "";
+    }
 
-if (process.env.REACT_APP_API_URL || fs.existsSync(envPath)) {
-    console.log("Using the API URL already configured for this environment.");
-    process.exit(0);
+    const parts = process.argv.slice(execIndex + 1);
+    if (parts[0] === "--") {
+        parts.shift();
+    }
+
+    return parts.join(" ");
 }
 
-const branch = detectBranch();
-const apiUrl = apiUrlForBranch(branch);
+function runCommand(command) {
+    const result = spawnSync(command, {
+        stdio: "inherit",
+        env: process.env,
+        shell: true,
+    });
 
-fs.writeFileSync(envPath, `REACT_APP_API_URL="${apiUrl}"\n`);
-console.log(`Branch "${branch || "unknown"}" uses ${apiUrl}`);
+    process.exit(result.status === null ? 1 : result.status);
+}
+
+const envPath = path.join(process.cwd(), ".env");
+const vercelBranch = normalizeBranch(process.env.VERCEL_GIT_COMMIT_REF);
+
+if (vercelBranch) {
+    const apiUrl = apiUrlForBranch(vercelBranch);
+    process.env.REACT_APP_API_URL = apiUrl;
+    fs.writeFileSync(envPath, `REACT_APP_API_URL="${apiUrl}"\n`);
+    console.log(`Vercel branch "${vercelBranch}" uses ${apiUrl}`);
+} else if (process.env.REACT_APP_API_URL || fs.existsSync(envPath)) {
+    console.log("Using the API URL already configured for this environment.");
+} else {
+    const branch = detectBranch();
+    const apiUrl = apiUrlForBranch(branch);
+    process.env.REACT_APP_API_URL = apiUrl;
+    fs.writeFileSync(envPath, `REACT_APP_API_URL="${apiUrl}"\n`);
+    console.log(`Branch "${branch || "unknown"}" uses ${apiUrl}`);
+}
+
+const command = commandFromArgs();
+if (command) {
+    runCommand(command);
+}
